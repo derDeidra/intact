@@ -1,4 +1,4 @@
-var User = require("./../schema-compiled.js").User;
+var User = require("./../schema").User;
 var bcrypt = require("bcrypt");
 var config = require("config");
 var saltRounds = config.get("saltRounds");
