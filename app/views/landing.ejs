@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('templates/head', {title: 'Welcome!'}) %>
+<body>
+    <h1>Hi m8 welcome to Intrigue</h1>
+    <h3><%=message%></h3>
+    <ul>
+        Login
+        <form action="/login" method="post">
+            <label for="email">Email: </label>
+            <input type="text" name="email" placeholder="Enter your email">
+            <label for="password">Password: </label>
+            <input type="password" name="password" placeholder="Enter your password">
+            <input type="submit">
+        </form>
+        Register
+        <form action="/register" method="post">
+            <label for="name">Name: </label>
+            <input type="text" name="name" placeholder="Enter your name">
+            <label for="email">Email: </label>
+            <input type="text" name="email" placeholder="Enter your email">
+            <label for="password">Password: </label>
+            <input type="password" name="password" placeholder="Enter your password">
+            <input type="submit">
+        </form>
+    </ul>
+</body>
+
+</html>
