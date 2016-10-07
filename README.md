@@ -1,6 +1,7 @@
 An internal social networking and collaboration solution
 
 Installation instructions:
+
 1.  Download and install MongoDB
 
 2.  Download and install Node.js
