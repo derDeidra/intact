@@ -1,15 +1,15 @@
-var express = require('express');
+const express = require('express');
 module.exports = function() {
-    var app = express();
+    let app = express();
 
     app.set('views', './app/views');
     app.set('view engine', 'ejs');
 
-    var session = require('express-session');
-    var MongoStore = require('connect-mongo')(session);
-    var mongoose = require('mongoose');
+    const session = require('express-session');
+    const MongoStore = require('connect-mongo')(session);
+    const mongoose = require('mongoose');
 
-    var bodyParser = require('body-parser');
+    const bodyParser = require('body-parser');
     app.use(bodyParser.urlencoded({extended: false}));
     app.use(bodyParser.json());
 
@@ -25,7 +25,7 @@ module.exports = function() {
         })
     }));
 
-    var morgan = require('morgan');
+    const morgan = require('morgan');
     app.use(morgan('dev'));
 
     require('../app/db');
