@@ -1,10 +1,9 @@
 {
-  "name": "intrigue",
-  "description": "It's like Tinder for characters",
+  "name": "intact",
+  "description": "A social networking and collaboration tool",
   "main": "server.js",
   "authors": [
-    "Ezra Dowd <ezra.dowd@gmail.com>",
-    "Ariel Lee <ariellee616@gmail.com>"
+    "Ezra Dowd <ezra.dowd@gmail.com>"
   ],
   "license": "MIT",
   "keywords": [
