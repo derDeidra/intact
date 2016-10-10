@@ -16,7 +16,8 @@ const GroupSchema = new mongoose.Schema({
     name : { type: String, unique : true, required : true },
     owner: { type : objId, required : true },
     description : String,
-    posts : [objId]
+    posts : [objId],
+    members : [objId]
 });
 
 GroupSchema.post("save", (doc, next) => {
