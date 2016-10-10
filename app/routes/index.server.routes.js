@@ -23,5 +23,8 @@ module.exports = function(app) {
     app.post('/removePost', auth.isLoggedIn, api.removePost);
     app.post('/removeComment', auth.isLoggedIn, api.removeComment);
 
-    app.get('/getGroups', auth.isLoggedIn, api.getGroups);
+    app.get('/getUserGroups', auth.isLoggedIn, api.getUserGroups);
+    app.get('/getAllGroups', auth.isLoggedIn, api.getAllGroups);
+    app.get('/getPostsForGroup', auth.isLoggedIn, api.getPostsForGroup);
+    app.get('/getCommentsForPost', auth.isLoggedIn, api.getCommentsForPost);
 };
