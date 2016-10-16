@@ -1,0 +1,27 @@
+body {
+  min-height: 2000px;
+  padding-top: 70px;
+}
+i {
+	float: right;
+}
+.table{
+	padding-top: 3em;
+	display: table;
+
+	
+}
+.tablerow{
+	display: table-row;
+
+	
+}
+.tablecell{
+	display: table-cell;
+	padding-left: 65px;
+    
+    
+}
+a p {
+	float: right;
+}
