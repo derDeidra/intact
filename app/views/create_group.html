@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Create a Group</title>
+    <script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <img src="intactlogo.png" max-height="75%"/>
+            <a class="navbar-brand" href="file:///C:/Users/?/Desktop/website/index.html?">IntactInsider</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <form class="navbar-form navbar-right">
+                <div class="form-group">
+                    <input type="text" placeholder="Email" class="form-control">
+                </div>
+                <div class="form-group">
+                    <input type="password" placeholder="Password" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-primary">Sign in</button>
+            </form>
+        </div><!--/.navbar-collapse -->
+    </div>
+</nav>
+
+<h1>Create a Group</h1>
+
+<div class="form-group">
+    <label for="usr">Group Name:</label>
+    <input type="text" class="form-control" id="usr">
+</div>
+
+<div class="form-group">
+    <label for="pwd">Group Description:</label>
+    <input type="password" class="form-control" id="pwd">
+</div>
+
+<div class="form-group">
+    <label for="pwd">Add Group Members:</label>
+    <input type="password" class="form-control" id="pwd">
+</div>
+
+<form action="/creategroup" method="post">
+    <input type="submit">
+</form>
+<button type="button">
+    Cancel
+</button>
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="js/bootstrap.min.js"></script>
+</body>
+</html>
