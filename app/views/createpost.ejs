@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- saved from url=(0050)http://getbootstrap.com/examples/navbar-fixed-top/ -->
-<html lang="en" class="gr__getbootstrap_com">
+<html lang="en" ng-app="intact">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
@@ -18,7 +18,11 @@
     <!-- Custom styles for this template -->
     <link href="/css/navbar-fixed-top.css" rel="stylesheet">
 
-<body>
+    <script type="text/javascript" src="/bower_components/angular/angular.min.js"></script>
+    <script type="text/javascript" src="/js/intact.js"></script>
+    <script type="text/javascript" src="/js/createpostpage.js"></script>
+
+<body ng-controller="createpost-page-body">
 
 <nav class="navbar navbar-inverse navbar-fixed-top">
 
@@ -45,21 +49,20 @@
             <div class="jumbotron">
                 <h1>Create Post</h1>
                 <form>
-                    <div class="form-group" method="POST" action="/savePost">
+                    <div class="form-group">
                         <label class="sr-only" for="title">Post Title:</label>
-                        <input type="title" class="form-control titleFm" id="title" placeholder="Post Title">
+                        <input type="title" class="form-control titleFm" id="title" placeholder="Post Title" ng-model="post.title">
                     </div>
                     <div class="form-group">
                         <label class="sr-only" for="description">Post Description:</label>
-                        <textarea class="form-control" rows="8" id="description"
-                                  placeholder="Post Description"></textarea>
+                        <textarea class="form-control" rows="8" id="description" placeholder="Post Description" ng-model="post.body"></textarea>
                     </div>
                     <div class="form-group">
                         <label class="control-label" for="input-1">Attach File</label>
                         <input id="input-1" type="file" class="file">
                     </div>
                     <div class="form-group">
-                        <button type="button" class="btn btn-primary active">Share Post</button>
+                        <button type="button" class="btn btn-primary active" ng-click="savePost()">Share Post</button>
                     </div>
                 </form>
             </div> <!--/jumbotron -->
@@ -68,7 +71,7 @@
 
         <div class="col-sm-4 col-sm-offset-1 sidebar">
             <div class="btn-group-vertical sidebar-module">
-                <h2>Welcome to Global Group!</h2>
+                <h2>Welcome to g/<%=groupName%></h2>
                 <p>Rules</p>
                 <ul class="list-unstyled">
                     <li>- Be Nice to people</li>

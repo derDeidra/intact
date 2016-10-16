@@ -5,19 +5,19 @@ const UserSchema = new mongoose.Schema({
     name : { type : String, required : true },
     email : { type : String, unique : true, required : true },
     password : {type : String, required : true },
-    groups : [objId],
-    posts : [objId],
-    comments : [objId]
+    groups : [{type : objId, ref : 'Group'}],
+    posts : [{type : objId, ref: 'Post'}],
+    comments : [{type : objId, ref : 'Comment'}]
 });
 
 const User = mongoose.model("User", UserSchema);
 
 const GroupSchema = new mongoose.Schema({
     name : { type: String, unique : true, required : true },
-    owner: { type : objId },
+    owner: { type : objId, ref : 'User'},
     description : String,
-    posts : [objId],
-    members : [objId]
+    posts : [{type : objId, ref: 'Post'}],
+    members : [{ type : objId, ref : 'User'}]
 });
 
 GroupSchema.post("save", (doc, next) => {
@@ -37,13 +37,13 @@ const Group = mongoose.model("Group", GroupSchema);
 
 const PostSchema = new mongoose.Schema({
     title : { type : String, required : true },
-    group : { type : objId, required : true },
+    group : { type : objId, required : true, ref : 'Group' },
     body : String,
-    poster : { type : objId, required : true },
-    comments : [objId]
+    poster : { type : objId, required : true, ref : 'User'},
+    comments : [{type : objId, ref : 'Comment'}]
 });
 
-GroupSchema.post("save", (doc, next) => {
+PostSchema.post("save", (doc, next) => {
     User.findByIdAndUpdate(doc.poster, {$push : {"posts" : doc._id}}).exec();
     Group.findByIdAndUpdate(doc.group, {$push : {"posts" : doc._id}}).exec();
     next();
@@ -61,11 +61,11 @@ PostSchema.pre("remove", (next) => {
 const Post = mongoose.model("Post", PostSchema);
 
 const CommentSchema = new mongoose.Schema({
-    post : objId,
+    post : { type : objId, ref : 'Post' },
     parent: objId,
-    owner : { type : objId, required : true },
-    comment : { type : String, required : true },
-    children : [objId]
+    owner : { type : objId, required : true, ref : 'User' },
+    comment : { type : String, required : true, ref : 'Comment' },
+    children : [{ type : objId, ref : 'Comment' }]
 });
 
 CommentSchema.post("save", (doc, next) => {

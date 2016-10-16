@@ -14,7 +14,7 @@ const OIDType = mongoose.Schema.Types.ObjectId;
  *   The express HTTP response to be sent back to the requester
  */
 exports.saveGroup = (req, res) => {
-    let gObj = req.body.groupObject;
+    let gObj = req.body;
     let currentUID = req.session.uid;
     if(gObj._id){
         Group.update({ _id : OIDType(gObj._id), owner : currentUID}, {$set : gObj}, (err, doc) => {
@@ -66,7 +66,7 @@ exports.removeGroup = (req, res) => {
  *   The express HTTP response to be sent back to the requester
  */
 exports.savePost = (req, res) => {
-    let pObj = req.body.postObject;
+    let pObj = req.body;
     let currentUID = req.session.uid;
     if(pObj._id){
         Post.update({ _id : OIDType(pObj._id), poster : currentUID}, {$set : pObj}, (err, doc) => {
@@ -78,14 +78,17 @@ exports.savePost = (req, res) => {
             }
         });
     } else {
-        pObj.owner = owner;
-        Post.create(pObj, (err, doc) => {
-            if(err){
-                console.error(err);
-                res.status(500).json({message : 'An error occurred updating the post', data : doc});
-            } else {
-                res.json({message : 'Post created', data : doc});
-            }
+        pObj.poster = currentUID;
+        Group.findOne({name : pObj.groupName}, function(err, doc){
+            pObj.group = doc._id;
+            Post.create(pObj, (err, doc) => {
+                if(err){
+                    console.error(err);
+                    res.status(500).json({message : 'An error occurred creating the post', data : doc});
+                } else {
+                    res.json({message : 'Post created', data : doc});
+                }
+            });
         });
     }
 };
@@ -234,7 +237,7 @@ exports.getAllGroups = (req, res) => {
  */
 exports.getPostsForGroup = (req, res) => {
     let groupName = req.query.groupName;
-    Group.find({name : groupName}).populate('posts').exec(function(err, doc){
+    Group.findOne({name : groupName}).populate('posts').exec(function(err, doc){
         if(err){
             console.error(err);
             res.status(500).json({message : 'An error occurred finding the posts', data : doc});
@@ -242,7 +245,7 @@ exports.getPostsForGroup = (req, res) => {
             if(doc.length == 0){
                 res.status(500).json({message : 'No group found with that name', data : doc});
             } else {
-                res.json({message : `Found ${doc[0].posts.length} posts`, data : doc[0].posts});
+                res.json({message : `Found ${doc.posts.length} posts`, data : doc.posts});
             }
         }
     });

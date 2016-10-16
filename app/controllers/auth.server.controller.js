@@ -71,12 +71,12 @@ exports.register = (req, res) => {
             res.redirect('/');
         } else {
             bcrypt.hash(password, saltRounds, (err, hash) => {
-                User.create({name : name, password : hash, email : email, posts : [], groups : [globalGroup]}, (err) => {
+                User.create({name : name, password : hash, email : email, posts : [], groups : [globalGroup]}, (err, doc) => {
                     if(err){
                         req.session.loggedin = false;
                         res.redirect('/');
                     } else {
-                        Group.findByIdAndUpdate(globalGroup, {$push : {"members" : docs._id}}, (err, gdoc) => {
+                        Group.findByIdAndUpdate(globalGroup, {$push : {"members" : doc._id}}, (err, gdoc) => {
                             if(err){
                                 req.session.loggedin = false;
                                 res.redirect('/');
@@ -84,7 +84,7 @@ exports.register = (req, res) => {
                                 console.log(`Added user ${email} with password ${password} hashed as ${hash}`);
                                 req.session.loggedin = true;
                                 req.session.name = name;
-                                req.session.uid = docs._id;
+                                req.session.uid = doc._id;
                                 res.redirect('/g/all');
                             }
                         });
