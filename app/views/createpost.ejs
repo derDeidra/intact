@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<!-- saved from url=(0050)http://getbootstrap.com/examples/navbar-fixed-top/ -->
+<html lang="en" class="gr__getbootstrap_com">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Intact Insider</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/css/navbar-fixed-top.css" rel="stylesheet">
+
+<body>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <img src="/images/intactlogo.png" height="25%"/>
+            <a class="navbar-brand" href="/">IntactInsider</a>
+        </div>
+
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-7">
+            <div class="jumbotron">
+                <h1>Create Post</h1>
+                <form>
+                    <div class="form-group" method="POST" action="/savePost">
+                        <label class="sr-only" for="title">Post Title:</label>
+                        <input type="title" class="form-control titleFm" id="title" placeholder="Post Title">
+                    </div>
+                    <div class="form-group">
+                        <label class="sr-only" for="description">Post Description:</label>
+                        <textarea class="form-control" rows="8" id="description"
+                                  placeholder="Post Description"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="input-1">Attach File</label>
+                        <input id="input-1" type="file" class="file">
+                    </div>
+                    <div class="form-group">
+                        <button type="button" class="btn btn-primary active">Share Post</button>
+                    </div>
+                </form>
+            </div> <!--/jumbotron -->
+        </div>
+
+
+        <div class="col-sm-4 col-sm-offset-1 sidebar">
+            <div class="btn-group-vertical sidebar-module">
+                <h2>Welcome to Global Group!</h2>
+                <p>Rules</p>
+                <ul class="list-unstyled">
+                    <li>- Be Nice to people</li>
+                    <li>- Do not be mean to people</li>
+                    <li>- Being helpful is cool</li>
+                </ul>
+            </div>
+        </div>
+
+
+    </div>
+</div> <!-- /container -->
+</body>
+<div id="abineFillElement"></div>
+</html>

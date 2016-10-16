@@ -14,7 +14,7 @@ const User = mongoose.model("User", UserSchema);
 
 const GroupSchema = new mongoose.Schema({
     name : { type: String, unique : true, required : true },
-    owner: { type : objId, required : true },
+    owner: { type : objId },
     description : String,
     posts : [objId],
     members : [objId]

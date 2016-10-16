@@ -1,7 +1,28 @@
-const User = require('./../schema').User;
+const schema = require('./../schema');
+const User = schema.User;
+const Group = schema.Group;
 const bcrypt = require('bcrypt');
 const config = require('config');
 const saltRounds = config.get('saltRounds');
+let globalGroup;
+
+Group.find({name : "all"}, (err, doc) => {
+    if(err){
+        console.log("Error finding master group");
+    } else {
+        if(doc.length > 0){
+            globalGroup = doc[0]._id;
+        } else {
+            Group.create({name : "all", description : "global group", posts : [], members : []}, (err, ndoc) => {
+                if(err){
+                    console.log("Error creating master group");
+                } else {
+                    globalGroup = ndoc._id;
+                }
+            });
+        }
+    }
+});
 
 /**
  * Function to validate user registration inputs
@@ -50,16 +71,23 @@ exports.register = (req, res) => {
             res.redirect('/');
         } else {
             bcrypt.hash(password, saltRounds, (err, hash) => {
-                User.create({name : name, password : hash, email : email}, (err) => {
+                User.create({name : name, password : hash, email : email, posts : [], groups : [globalGroup]}, (err) => {
                     if(err){
                         req.session.loggedin = false;
                         res.redirect('/');
                     } else {
-                        console.log(`Added user ${email} with password ${password} hashed as ${hash}`);
-                        req.session.loggedin = true;
-                        req.session.name = name;
-                        req.session.uid = docs._id;
-                        res.redirect('/dashboard');
+                        Group.findByIdAndUpdate(globalGroup, {$push : {"members" : docs._id}}, (err, gdoc) => {
+                            if(err){
+                                req.session.loggedin = false;
+                                res.redirect('/');
+                            } else {
+                                console.log(`Added user ${email} with password ${password} hashed as ${hash}`);
+                                req.session.loggedin = true;
+                                req.session.name = name;
+                                req.session.uid = docs._id;
+                                res.redirect('/g/all');
+                            }
+                        });
                     }
                 });
             });
@@ -91,7 +119,7 @@ exports.login = (req, res) => {
                     req.session.name = person.name;
                     req.session.uid = person._id;
                     req.session.message = 'You have been successfully logged in!';
-                    res.redirect('/dashboard');
+                    res.redirect('/g/all');
                 } else {
                     req.session.loggedin = false;
                     req.session.message = 'Invalid username or password!';
@@ -152,7 +180,7 @@ exports.isLoggedIn = (req, res, next) => {
 exports.indexRedirect = (req, res, next) => {
     if(req.session.loggedin){
         if(req.session.loggedin == true)
-            res.redirect('/dashboard');
+            res.redirect('/g/all');
     } else {
         next();
     }

@@ -1,0 +1,93 @@
+<html lang="en" ng-app="intact">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Intact Insider</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+
+
+    <!-- Custom styles for this template -->
+    <link href="/css/group.css" rel="stylesheet">
+    <link href="/css/navbar-fixed-top.css" rel="stylesheet">
+
+    <script type="text/javascript" src="/bower_components/angular/angular.min.js"></script>
+    <script type="text/javascript" src="/js/intact.js"></script>
+    <script type="text/javascript" src="/js/grouppage.js"></script>
+
+<body ng-controller="group-page-body">
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <img src="/images/intactlogo.png" height="25%"/>
+            <a class="navbar-brand" href="/">IntactInsider</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+
+    <div class="blog-header">
+        <h1 class="blog-title">Insider News Feed</h1>
+        <p class="lead blog-description">This is what is happening around Intact...</p>
+    </div>
+
+    <div class="row">
+        <div ng-if="posts.length > 0">
+            <div class="col-md-8 blog-main" ng-repeat="post in posts">
+                <div class="newsFeed">
+                    <a class="feeds" href="/g/{{groupName}}/p/{{post._id}}">
+                        <p><b><h3>{{post.title}}</h3></b></p>
+                        <p>Submitted some days ago, {{post.comments.length}} comments</p>
+                    </a>
+                </div>
+            </div><!-- /.blog-main -->
+        </div>
+        <div ng-if="posts.length == 0">
+            <div class="col-md-8 blog-main">
+                <div class="newsFeed">
+                    <div class="feeds">
+                        <p><b><h3>No Posts!</h3></b></p>
+                        <p>There aren't any posts here</p>
+                    </div>
+                </div>
+            </div><!-- /.blog-main -->
+        </div>
+
+        <div class="col-md-3 col-md-offset-1 blog-sidebar">
+            <div class="btn-group-vertical sidebar-module">
+                <a ng-href="/g/{{groupName}}/post" class="btn btn-default btn-lg"><h2>Create Post</h2></a>
+                <a href="/createGroup" class="btn btn-default btn-lg"><h2>Create Group</h2></a>
+                <p></p>
+            </div>
+            <div class="sidebar-module2">
+                <h2>My Groups</h2>
+                <ol class="list-unstyled">
+                    <li ng-repeat="group in groups">
+                        <a ng-href="/g/{{group.name}}">
+                            <h4>&emsp;- {{group.name}} <span ng-if="group.name == groupName">*</span>&emsp;{{group.members.length}}
+                                Members</h4>
+                        </a>
+                    </li>
+                </ol>
+            </div>
+        </div><!-- /.blog-sidebar -->
+    </div><!-- /.row -->
+</div><!-- /.container -->
+</body>
+</html>

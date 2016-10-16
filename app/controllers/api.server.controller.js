@@ -3,6 +3,7 @@ const schema = require('./../schema');
 const Group = schema.Group;
 const Post = schema.Post;
 const Comment = schema.Comment;
+const User = schema.User;
 const OIDType = mongoose.Schema.Types.ObjectId;
 
 /**
@@ -19,7 +20,7 @@ exports.saveGroup = (req, res) => {
         Group.update({ _id : OIDType(gObj._id), owner : currentUID}, {$set : gObj}, (err, doc) => {
             if(err){
                 console.error(err);
-                res.statusCode(500).json({message : 'An error occurred updating the group', data : doc});
+                res.status(500).json({message : 'An error occurred updating the group', data : doc});
             } else {
                 res.json({message : 'Group updated', data : doc});
             }
@@ -29,7 +30,7 @@ exports.saveGroup = (req, res) => {
         Group.create(gObj, (err, doc) => {
             if(err){
                 console.error(err);
-                res.statusCode(500).json({message : 'An error occurred updating the group', data : doc});
+                res.status(500).json({message : 'An error occurred updating the group', data : doc});
             } else {
                 res.json({message : 'Group created', data : doc});
             }
@@ -50,7 +51,7 @@ exports.removeGroup = (req, res) => {
     Group.remove({_id : groupId, owner : currentUID}, (err, doc) => {
         if(err){
             console.error(err);
-            res.statusCode(500).json({message : 'An error occured removing the group', data : doc});
+            res.status(500).json({message : 'An error occured removing the group', data : doc});
         } else {
             res.json({message : 'Group removed', data : doc});
         }
@@ -71,7 +72,7 @@ exports.savePost = (req, res) => {
         Post.update({ _id : OIDType(pObj._id), poster : currentUID}, {$set : pObj}, (err, doc) => {
             if(err){
                 console.error(err);
-                res.statusCode(500).json({message : 'An error occurred updating the post', data : doc});
+                res.status(500).json({message : 'An error occurred updating the post', data : doc});
             } else {
                 res.json({message : 'Post updated', data : doc});
             }
@@ -81,7 +82,7 @@ exports.savePost = (req, res) => {
         Post.create(pObj, (err, doc) => {
             if(err){
                 console.error(err);
-                res.statusCode(500).json({message : 'An error occurred updating the post', data : doc});
+                res.status(500).json({message : 'An error occurred updating the post', data : doc});
             } else {
                 res.json({message : 'Post created', data : doc});
             }
@@ -102,7 +103,7 @@ exports.removePost = (req, res) => {
     Post.remove({_id : postId, poster : currentUID}, (err, doc) => {
         if(err){
             console.error(err);
-            res.statusCode(500).json({message : 'An error occurred removing the post', data : doc});
+            res.status(500).json({message : 'An error occurred removing the post', data : doc});
         } else {
             res.json({message : 'Post removed', data : doc});
         }
@@ -123,7 +124,7 @@ exports.saveComment = (req, res) => {
         Comment.update({ _id : OIDType(cObj._id), poster : currentUID}, {$set : cObj}, (err, doc) => {
             if(err){
                 console.error(err);
-                res.statusCode(500).json({message : 'An error occurred updating the comment', data : doc});
+                res.status(500).json({message : 'An error occurred updating the comment', data : doc});
             } else {
                 res.json({message : 'Comment updated', data : doc});
             }
@@ -133,7 +134,7 @@ exports.saveComment = (req, res) => {
         Comment.create(cObj, (err, doc) => {
             if(err){
                 console.error(err);
-                res.statusCode(500).json({message : 'An error occurred updating the post', data : doc});
+                res.status(500).json({message : 'An error occurred updating the post', data : doc});
             } else {
                 res.json({message : 'Comment created', data : doc});
             }
@@ -154,7 +155,7 @@ exports.removeComment = (req, res) => {
     Comment.remove({_id : commentId, poster : currentUID}, (err, doc) => {
         if(err){
             console.error(err);
-            res.statusCode(500).json({message : 'An error occurred removing the post', data : doc});
+            res.status(500).json({message : 'An error occurred removing the post', data : doc});
         } else {
             res.json({message : 'Post removed', data : doc});
         }
@@ -174,9 +175,15 @@ exports.joinGroup = (req, res) => {
     Group.findByIdAndUpdate(groupId, {$push : {"members" : currentUID}}, (err, doc) => {
         if(err){
             console.error(err);
-            res.statusCode(500).json({message : 'An error occurred joining the group', data : doc});
+            res.status(500).json({message : 'An error occurred joining the group', data : doc});
         } else {
-            res.json({message : `Joined group`, data : doc});
+            User.findByIdAndUpdate(currentUID, {$push : {"groups" : groupId}}, (err, doc) => {
+                if(err){
+                    res.status(500).json({message : 'An error occurred joining the group', data : doc});
+                } else {
+                    res.json({message : `Joined group`, data : doc});
+                }
+            });
         }
     });
 };
@@ -193,7 +200,7 @@ exports.getUserGroups = (req, res) => {
     Group.find({members : currentUID}, (err, doc) => {
         if(err){
             console.error(err);
-            res.statusCode(500).json({message : 'An error occurred finding the groups', data : doc});
+            res.status(500).json({message : 'An error occurred finding the groups', data : doc});
         } else {
             res.json({message : `Found ${doc.length} groups`, data : doc});
         }
@@ -211,7 +218,7 @@ exports.getAllGroups = (req, res) => {
     Group.find({}, (err, doc) => {
         if(err){
             console.error(err);
-            res.statusCode(500).json({message : 'An error occurred finding the groups', data : doc});
+            res.status(500).json({message : 'An error occurred finding the groups', data : doc});
         } else {
             res.json({message : `Found ${doc.length} groups`, data : doc});
         }
@@ -226,13 +233,17 @@ exports.getAllGroups = (req, res) => {
  *   The express HTTP response to be sent back to the requester
  */
 exports.getPostsForGroup = (req, res) => {
-    let groupId = OIDType(req.query.groupId);
-    Post.find({group : groupId}, (err, doc) => {
+    let groupName = req.query.groupName;
+    Group.find({name : groupName}).populate('posts').exec(function(err, doc){
         if(err){
             console.error(err);
-            res.statusCode(500).json({message : 'An error occurred finding the posts', data : doc});
+            res.status(500).json({message : 'An error occurred finding the posts', data : doc});
         } else {
-            res.json({message : `Found ${doc.length} posts`, data : doc});
+            if(doc.length == 0){
+                res.status(500).json({message : 'No group found with that name', data : doc});
+            } else {
+                res.json({message : `Found ${doc[0].posts.length} posts`, data : doc[0].posts});
+            }
         }
     });
 };
@@ -249,7 +260,7 @@ exports.getCommentsForPost = (req, res) => {
     Comment.find({post : postId}, (err, doc) => {
         if(err){
             console.error(err);
-            res.statusCode(500).json({message : 'An error occurred finding the comments', data : doc});
+            res.status(500).json({message : 'An error occurred finding the comments', data : doc});
         } else {
             res.json({message : `Found ${doc.length} comments`, data : doc});
         }

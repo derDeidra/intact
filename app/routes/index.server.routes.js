@@ -1,13 +1,21 @@
 module.exports = function(app) {
 
     const landing = require('../controllers/landing.server.controller');
-    const dashboard = require('../controllers/dashboard.server.controller');
+    const register = require('../controllers/register.server.controller');
+    const group = require('../controllers/group.server.controller');
+    const creategroup = require('../controllers/creategroup.server.controller');
+    const post = require('../controllers/post.server.controller');
+    const createpost = require('../controllers/createpost.server.controller');
     const auth = require('../controllers/auth.server.controller');
     const api = require('../controllers/api.server.controller');
 
     //Pages
     app.get('/', auth.indexRedirect, landing.render);
-    app.get('/dashboard', auth.isLoggedIn, dashboard.render);
+    app.get('/register', register.render);
+    app.get('/g/:groupName/post', auth.isLoggedIn, createpost.render);
+    app.get('/createGroup', auth.isLoggedIn, creategroup.render);
+    app.get('/g/:groupName', auth.isLoggedIn, group.render);
+    app.get('/g/:groupName/:postId', auth.isLoggedIn, post.render);
 
     //Auth
     app.post('/register', auth.register);

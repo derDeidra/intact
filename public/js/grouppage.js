@@ -1,13 +1,13 @@
 app.controller('group-page-body', function($scope, $http){
-    //app.com/g/:groupId/
-    $scope.groupId = window.location.pathname.split('/')[1];
+    //app.com/g/:groupName/
+    $scope.groupName = window.location.pathname.split('/')[2];
     $scope.posts = [];
     $scope.groups = [];
 
     function getUserGroups(){
         var req = {
             method: 'GET',
-            url: 'getUserGroups',
+            url: '/getUserGroups',
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -21,10 +21,10 @@ app.controller('group-page-body', function($scope, $http){
         });
     }
 
-    function getPostsForGroup(groupId){
+    function getPostsForGroup(groupName){
         var req = {
             method: 'GET',
-            url: 'getPostsForGroup?groupId=' + groupId,
+            url: '/getPostsForGroup?groupName=' + groupName,
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -39,5 +39,5 @@ app.controller('group-page-body', function($scope, $http){
     }
 
     getUserGroups();
-    getPostsForGroup(groupId);
+    getPostsForGroup($scope.groupName);
 });

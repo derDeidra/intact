@@ -1,31 +1,56 @@
 <!DOCTYPE html>
+<!-- saved from url=(0043)http://getbootstrap.com/examples/jumbotron/ -->
 <html lang="en">
 <head>
-    <title>Intact woo</title>
-</head>
-<body>
-    <h1>Hi m8 welcome to Intact</h1>
-    <h3><%=message%></h3>
-    <ul>
-        Login
-        <form action="/login" method="post">
-            <label for="email">Email: </label>
-            <input type="text" name="email" placeholder="Enter your email">
-            <label for="password">Password: </label>
-            <input type="password" name="password" placeholder="Enter your password">
-            <input type="submit">
-        </form>
-        Register
-        <form action="/register" method="post">
-            <label for="name">Name: </label>
-            <input type="text" name="name" placeholder="Enter your name">
-            <label for="email">Email: </label>
-            <input type="text" name="email" placeholder="Enter your email">
-            <label for="password">Password: </label>
-            <input type="password" name="password" placeholder="Enter your password">
-            <input type="submit">
-        </form>
-    </ul>
-</body>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Intact Insider</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/jumbotron.css" rel="stylesheet">
+</head>
+
+<body>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <img src="images/intactlogo.png" max-height="75%"/>
+            <a class="navbar-brand" href="/">IntactInsider</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <form class="navbar-form navbar-right" method="POST" action="login">
+                <div class="form-group">
+                    <input type="text" placeholder="Email" class="form-control">
+                </div>
+                <div class="form-group">
+                    <input type="password" placeholder="Password" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-primary">Sign in</button>
+                <a href="/register" class="btn btn-primary"><i>Register Here</i></a>
+            </form>
+        </div><!--/.navbar-collapse -->
+    </div>
+
+</nav>
+<!-- Main jumbotron for a primary marketing message or call to action -->
+<img src="images/collaboration.jpg" width=100%/>
+<footer>
+    <p>© 2016 Intact, Inc.</p>
+</footer>
+</div> <!-- /container -->
+</body>
 </html>
