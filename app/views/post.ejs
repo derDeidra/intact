@@ -50,8 +50,8 @@
                 </div>
                 <div class="tablecell">
                     <p>
-                        <a href="#" ng-click="deleteComment(this)" ng-if="comment.owner._id === userId">Delete</a>
-                        <a href="#" ng-click="createComment(this)">Respond</a>
+                        <a href="#" ng-click="deleteComment(comment)" ng-if="comment.owner._id === userId">Delete</a>
+                        <a href="#" ng-click="createComment(comment)">Respond</a>
                     </p>
                 </div>
             </div>

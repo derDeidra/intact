@@ -84,15 +84,14 @@ CommentSchema.post("save", (doc, next) => {
 });
 
 CommentSchema.pre("remove", (next) => {
-    if(this.parent){
-        Comment.findByIdAndUpdate(this.parent, {$pull : {"children" : this._id}}).exec();
-    } else {
-        Post.findByIdAndUpdate(this.post, {$pull : {"comments" : this._id}}).exec();
-    }
+    //TODO this is horribly broken
+    Comment.update({_id : this.parent}, {$pull : {"children" : this._id}}).exec();
+    Post.update({_id : this.post}, {$pull : {"comments" : this._id}}).exec();
     for(let i = 0; i < this.children.length; i++){
         Comment.remove({_id : this.children[i]._id}).exec();
     }
     User.findByIdAndUpdate(this.poster, {$pull : {"comments" : doc._id}}).exec();
+    next();
 });
 
 const Comment = mongoose.model("Comment", CommentSchema);

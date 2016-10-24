@@ -54,13 +54,13 @@ app.controller('post-page-body', function($scope, $http){
     $scope.deleteComment = function(comment){
         var req = {
             method : 'POST',
-            url : 'removeComment',
+            url : '/removeComment',
             data : {commentId : comment._id}
         };
         $http(req).then(function(response){
             console.log("Deleted comment");
             console.log(response);
-            $scope.post.comments.splice($scope.post.comments.indexOf(comment));
+            $scope.post.comments.splice($scope.post.comments.indexOf(comment), 1);
         }, function(err){
             console.log(err);
         });

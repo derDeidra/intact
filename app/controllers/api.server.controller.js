@@ -183,9 +183,9 @@ exports.saveComment = (req, res) => {
  *   The express HTTP response to be sent back to the requester
  */
 exports.removeComment = (req, res) => {
-    let commentId = req.body.commentId;
-    let currentUID = req.session.uid;
-    Comment.remove({_id : commentId, poster : currentUID}, (err, doc) => {
+    let commentId = OIDType(req.body.commentId);
+    let currentUID = OIDType(req.session.uid);
+    Comment.remove({_id : commentId, owner : currentUID}, (err, doc) => {
         if(err){
             console.error(err);
             res.status(500).json({message : 'An error occurred removing the post', data : doc});
@@ -203,7 +203,7 @@ exports.removeComment = (req, res) => {
  *   The express HTTP response to be sent back to the requester
  */
 exports.joinGroup = (req, res) => {
-    let currentUID = req.session.uid;
+    let currentUID = OIDType(req.session.uid);
     let groupId = req.body.groupId;
     Group.findByIdAndUpdate(groupId, {$push : {"members" : currentUID}}, (err, doc) => {
         if(err){
@@ -229,7 +229,7 @@ exports.joinGroup = (req, res) => {
  *   The express HTTP response to be sent back to the requester
  */
 exports.getUserGroups = (req, res) => {
-    let currentUID = req.session.uid;
+    let currentUID = OIDType(req.session.uid);
     Group.find({members : currentUID}, (err, doc) => {
         if(err){
             console.error(err);
