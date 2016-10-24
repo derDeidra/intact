@@ -12,35 +12,15 @@
 
     <title>Intact Insider</title>
 
-    <!-- Bootstrap core CSS -->
-    <link href="/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <% include templates/common_depends.ejs %>
 
-    <!-- Custom styles for this template -->
-    <link href="/css/navbar-fixed-top.css" rel="stylesheet">
 
-    <script type="text/javascript" src="/bower_components/angular/angular.min.js"></script>
-    <script type="text/javascript" src="/js/intact.js"></script>
     <script type="text/javascript" src="/js/creategroup.js"></script>
 
 <body ng-controller="creategroup-page-body">
 
-<nav class="navbar navbar-inverse navbar-fixed-top">
+<% include templates/navbar.ejs %>
 
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
-                    aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <img src="/images/intactlogo.png" height="25%"/>
-            <a class="navbar-brand" href="/">IntactInsider</a>
-        </div>
-
-    </div>
-</nav>
 
 
 <div class="container">
