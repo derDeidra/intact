@@ -4,7 +4,7 @@ const Group = schema.Group;
 const Post = schema.Post;
 const Comment = schema.Comment;
 const User = schema.User;
-const OIDType = mongoose.Schema.Types.ObjectId;
+const OIDType = mongoose.Types.ObjectId;
 
 /**
  * @function Endpoint for creating and modifying groups
@@ -16,6 +16,7 @@ const OIDType = mongoose.Schema.Types.ObjectId;
 exports.saveGroup = (req, res) => {
     let gObj = req.body;
     let currentUID = req.session.uid;
+    gObj.name = gObj.name.split(' ').join('');
     if(gObj._id){
         Group.update({ _id : OIDType(gObj._id), owner : currentUID}, {$set : gObj}, (err, doc) => {
             if(err){
@@ -27,6 +28,8 @@ exports.saveGroup = (req, res) => {
         });
     } else {
         gObj.owner = currentUID;
+        gObj.posts = [];
+        gObj.members = Array(currentUID);
         Group.create(gObj, (err, doc) => {
             if(err){
                 console.error(err);
@@ -51,9 +54,28 @@ exports.removeGroup = (req, res) => {
     Group.remove({_id : groupId, owner : currentUID}, (err, doc) => {
         if(err){
             console.error(err);
-            res.status(500).json({message : 'An error occured removing the group', data : doc});
+            res.status(500).json({message : 'An error occurred removing the group', data : doc});
         } else {
             res.json({message : 'Group removed', data : doc});
+        }
+    });
+};
+
+/**
+ * @function Endpoint for getting group info by group name
+ * @param {object} req
+ *   The express HTTP request containing the information required for the function
+ * @param {object} res
+ *   The express HTTP response to be sent back to the requester
+ */
+exports.getGroupDetails = (req, res) => {
+    let groupName = req.query.groupName;
+    Group.findOne({name : groupName}, (err, doc) => {
+        if(err){
+            console.error(err);
+            res.status(500).json({message : 'An error occurred getting group data', data : doc});
+        } else {
+            res.json({message : 'Got group data', data : doc});
         }
     });
 };
@@ -121,7 +143,7 @@ exports.removePost = (req, res) => {
  *   The express HTTP response to be sent back to the requester
  */
 exports.saveComment = (req, res) => {
-    let cObj = req.body.commentObject;
+    let cObj = req.body;
     let currentUID = req.session.uid;
     if(cObj._id){
         Comment.update({ _id : OIDType(cObj._id), poster : currentUID}, {$set : cObj}, (err, doc) => {
@@ -133,13 +155,21 @@ exports.saveComment = (req, res) => {
             }
         });
     } else {
-        cObj.owner = owner;
+        cObj.owner = currentUID;
+        cObj.children = [];
         Comment.create(cObj, (err, doc) => {
             if(err){
                 console.error(err);
-                res.status(500).json({message : 'An error occurred updating the post', data : doc});
+                res.status(500).json({message : 'An error occurred updating the comment', data : doc});
             } else {
-                res.json({message : 'Comment created', data : doc});
+                User.populate(doc, 'owner', (err, doc) => {
+                    if(err){
+                        console.error(err);
+                        res.status(500).json({message : 'An error occurred creating the comment', data : doc});
+                    } else {
+                        res.json({message : 'Comment created', data : doc});
+                    }
+                });
             }
         });
     }
@@ -258,16 +288,33 @@ exports.getPostsForGroup = (req, res) => {
  * @param {object} res
  *   The express HTTP response to be sent back to the requester
  */
-exports.getCommentsForPost = (req, res) => {
+exports.getPostDetails = (req, res) => {
     let postId = OIDType(req.query.postId);
-    Comment.find({post : postId}, (err, doc) => {
+    Post.findById(postId).populate('comments').exec((err, doc) => {
         if(err){
-            console.error(err);
-            res.status(500).json({message : 'An error occurred finding the comments', data : doc});
+            res.status(500).json({message : 'An error occurred finding the post', data : doc});
         } else {
-            res.json({message : `Found ${doc.length} comments`, data : doc});
+            Post.populate(doc, {path : 'comments.owner', model : 'User'}, (err, doc2) => {
+                if(err){
+                    res.status(500).json({message : 'An error occurred finding the post', data : doc2});
+                } else {
+                    res.json({message : `Got post information`, data : doc2});
+                }
+            });
         }
     });
+};
+
+
+/**
+ * @function Endpoint for getting the current user id based on the session
+ * @param {object} req
+ *   The express HTTP request containing the information required for the function
+ * @param {object} res
+ *   The express HTTP response to be sent back to the requester
+ */
+exports.getUserId = (req, res) => {
+    res.send(req.session.uid);
 };
 
 

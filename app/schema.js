@@ -17,7 +17,8 @@ const GroupSchema = new mongoose.Schema({
     owner: { type : objId, ref : 'User'},
     description : String,
     posts : [{type : objId, ref: 'Post'}],
-    members : [{ type : objId, ref : 'User'}]
+    members : [{ type : objId, ref : 'User'}],
+    rules : [{type : String}]
 });
 
 GroupSchema.post("save", (doc, next) => {
@@ -41,6 +42,8 @@ const PostSchema = new mongoose.Schema({
     body : String,
     poster : { type : objId, required : true, ref : 'User'},
     comments : [{type : objId, ref : 'Comment'}]
+}, {
+    timestamps : true
 });
 
 PostSchema.post("save", (doc, next) => {
@@ -61,11 +64,13 @@ PostSchema.pre("remove", (next) => {
 const Post = mongoose.model("Post", PostSchema);
 
 const CommentSchema = new mongoose.Schema({
-    post : { type : objId, ref : 'Post' },
-    parent: objId,
+    post : { type : objId, required : false, ref : 'Post' },
+    parent: { type : objId, required : false, ref : 'Comment'},
     owner : { type : objId, required : true, ref : 'User' },
     comment : { type : String, required : true, ref : 'Comment' },
     children : [{ type : objId, ref : 'Comment' }]
+}, {
+    timestamps : true
 });
 
 CommentSchema.post("save", (doc, next) => {

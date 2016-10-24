@@ -38,6 +38,10 @@ app.controller('group-page-body', function($scope, $http){
         });
     }
 
+    $scope.formatInterval = function(timestamp){
+        return moment(timestamp).fromNow();
+    };
+
     getUserGroups();
     getPostsForGroup($scope.groupName);
 });

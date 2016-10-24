@@ -20,7 +20,8 @@
 
     <script type="text/javascript" src="/bower_components/angular/angular.min.js"></script>
     <script type="text/javascript" src="/js/intact.js"></script>
-    <script type="text/javascript" src="/js/grouppage.js"></script>
+    <script type="text/javascript" src="/js/group.js"></script>
+    <script type="text/javascript" src="/bower_components/moment/min/moment-with-locales.min.js"></script>
 
 <body ng-controller="group-page-body">
 
@@ -58,7 +59,7 @@
                     <a href="/g/{{groupName}}/p/{{post._id}}">
                         <div class="feeds">
                             <p><b><h3>{{post.title}}</h3></b></p>
-                            <p>Submitted some days ago, {{post.comments.length}} comments</p>
+                            <p>{{formatInterval(post.createdAt)}}, {{post.comments.length}} comments</p>
                         </div>
                     </a>
                 </div>

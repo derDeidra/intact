@@ -15,7 +15,7 @@ module.exports = function(app) {
     app.get('/g/:groupName/post', auth.isLoggedIn, createpost.render);
     app.get('/createGroup', auth.isLoggedIn, creategroup.render);
     app.get('/g/:groupName', auth.isLoggedIn, group.render);
-    app.get('/g/:groupName/:postId', auth.isLoggedIn, post.render);
+    app.get('/g/:groupName/p/:postId', auth.isLoggedIn, post.render);
 
     //Auth
     app.post('/register', auth.register);
@@ -31,8 +31,10 @@ module.exports = function(app) {
     app.post('/removePost', auth.isLoggedIn, api.removePost);
     app.post('/removeComment', auth.isLoggedIn, api.removeComment);
 
+    app.get('/getUserId', auth.isLoggedIn, api.getUserId);
     app.get('/getUserGroups', auth.isLoggedIn, api.getUserGroups);
     app.get('/getAllGroups', auth.isLoggedIn, api.getAllGroups);
     app.get('/getPostsForGroup', auth.isLoggedIn, api.getPostsForGroup);
-    app.get('/getCommentsForPost', auth.isLoggedIn, api.getCommentsForPost);
+    app.get('/getPostDetails', auth.isLoggedIn, api.getPostDetails);
+    app.get('/getGroupDetails', auth.isLoggedIn, api.getGroupDetails);
 };
