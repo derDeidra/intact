@@ -20,7 +20,7 @@ module.exports = function(app) {
     //Auth
     app.post('/register', auth.register);
     app.post('/login', auth.login);
-    app.post('/logout', auth.isLoggedIn, auth.logout);
+    app.get('/logout', auth.isLoggedIn, auth.logout);
 
     //API
     app.post('/saveGroup', auth.isLoggedIn, api.saveGroup);

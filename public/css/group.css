@@ -183,3 +183,14 @@ h6, .h6 {
 .blog-footer p:last-child {
   margin-bottom: 0;
 }
+
+.padding {
+  padding-left: 10px;
+}
+
+.comment-box {
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #eee;
+  margin-bottom: 10px;
+}

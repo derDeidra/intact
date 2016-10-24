@@ -12,11 +12,12 @@
 
     <title>Post</title>
 
+    <% include templates/angular_priority_depends.ejs %>
+    <script type="text/javascript" src="/js/post.js"></script>
+
     <% include templates/common_depends.ejs %>
 
     <link href="/css/group.css" rel="stylesheet">
-
-    <script type="text/javascript" src="/js/post.js"></script>
 
 </head>
 
@@ -39,7 +40,7 @@
             </p>
         </div>
         <div class="table">
-            <div class="tablerow" ng-repeat="comment in post.comments">
+            <div class="tablerow comment-box" ng-repeat="comment in post.comments">
                 <div class="tablecell">
                     <p><b>{{comment.owner.name}}</b></p>
                     <p>{{formatInterval(comment.createdAt)}}</p>
