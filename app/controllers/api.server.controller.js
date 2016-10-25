@@ -290,7 +290,7 @@ exports.getPostsForGroup = (req, res) => {
             console.error(err);
             res.status(500).json({message : 'An error occurred finding the posts', data : doc});
         } else {
-            if(doc.length == 0){
+            if(!doc){
                 res.status(500).json({message : 'No group found with that name', data : doc});
             } else {
                 res.json({message : `Found ${doc.posts.length} posts`, data : doc.posts});

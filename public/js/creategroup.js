@@ -12,7 +12,7 @@ app.controller('creategroup-page-body', function($scope, $http){
         $http(req).then(function(response){
             console.log("Group successfully created");
             console.log(response);
-            window.location = '/g/' + $scope.group.name;
+            window.location = '/g/' + $scope.group.name.split(' ').join('');
         }, function(err){
             console.log(err);
         });
