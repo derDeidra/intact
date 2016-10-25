@@ -21,12 +21,12 @@ const GroupSchema = new mongoose.Schema({
     rules : [{type : String}]
 });
 
-GroupSchema.post("save", (doc, next) => {
+GroupSchema.post("save", function(doc, next) {
     User.findByIdAndUpdate(doc.owner, {$push : {"groups" : doc._id}}).exec();
     next();
 });
 
-GroupSchema.pre("remove", (next) => {
+GroupSchema.pre("remove", function(next) {
     User.findByIdAndUpdate(this.owner, {$pull : {"groups" : this._id}}).exec();
     for(let i = 0; i < this.posts.length; i++){
         Post.remove({_id : this.posts[i]._id}).exec();
@@ -46,13 +46,13 @@ const PostSchema = new mongoose.Schema({
     timestamps : true
 });
 
-PostSchema.post("save", (doc, next) => {
+PostSchema.post("save", function(doc, next) {
     User.findByIdAndUpdate(doc.poster, {$push : {"posts" : doc._id}}).exec();
     Group.findByIdAndUpdate(doc.group, {$push : {"posts" : doc._id}}).exec();
     next();
 });
 
-PostSchema.pre("remove", (next) => {
+PostSchema.pre("remove", function(next) {
     Group.findByIdAndUpdate(this.group, {$pull : {"groups" : this._id}}).exec();
     User.findByIdAndUpdate(this.poster, {$pull : {"posts" : this._id}}).exec();
     for(let i = 0; i < this.comments.length; i++){
@@ -73,7 +73,7 @@ const CommentSchema = new mongoose.Schema({
     timestamps : true
 });
 
-CommentSchema.post("save", (doc, next) => {
+CommentSchema.post("save", function(doc, next) {
     if(doc.parent){
         Comment.findByIdAndUpdate(doc.parent, {$push : {"children" : doc._id}}).exec();
     } else {
@@ -83,14 +83,13 @@ CommentSchema.post("save", (doc, next) => {
     next();
 });
 
-CommentSchema.pre("remove", (next) => {
-    //TODO this is horribly broken
+CommentSchema.pre("remove", function (next) {
     Comment.update({_id : this.parent}, {$pull : {"children" : this._id}}).exec();
     Post.update({_id : this.post}, {$pull : {"comments" : this._id}}).exec();
     for(let i = 0; i < this.children.length; i++){
         Comment.remove({_id : this.children[i]._id}).exec();
     }
-    User.findByIdAndUpdate(this.poster, {$pull : {"comments" : doc._id}}).exec();
+    User.update({_id : this.poster}, {$pull : {"comments" : this._id}}).exec();
     next();
 });
 

@@ -18,7 +18,7 @@ exports.saveGroup = (req, res) => {
     let currentUID = req.session.uid;
     gObj.name = gObj.name.split(' ').join('');
     if(gObj._id){
-        Group.update({ _id : OIDType(gObj._id), owner : currentUID}, {$set : gObj}, (err, doc) => {
+        Group.findOneAndUpdate({ _id : OIDType(gObj._id), owner : currentUID}, {$set : gObj}, (err, doc) => {
             if(err){
                 console.error(err);
                 res.status(500).json({message : 'An error occurred updating the group', data : doc});
@@ -51,12 +51,18 @@ exports.saveGroup = (req, res) => {
 exports.removeGroup = (req, res) => {
     let groupId = req.body.groupId;
     let currentUID = req.session.uid;
-    Group.remove({_id : groupId, owner : currentUID}, (err, doc) => {
+    Group.findOne({_id : groupId, owner : currentUID}, (err, doc) => {
         if(err){
             console.error(err);
             res.status(500).json({message : 'An error occurred removing the group', data : doc});
         } else {
-            res.json({message : 'Group removed', data : doc});
+            doc.remove((err, removed) => {
+                if(err){
+                    res.status(500).json({message : 'An error occurred removing the group', data : removed});
+                } else {
+                    res.json({message : 'Group removed', data : removed});
+                }
+            });
         }
     });
 };
@@ -91,7 +97,7 @@ exports.savePost = (req, res) => {
     let pObj = req.body;
     let currentUID = req.session.uid;
     if(pObj._id){
-        Post.update({ _id : OIDType(pObj._id), poster : currentUID}, {$set : pObj}, (err, doc) => {
+        Post.findOneAndUpdate({ _id : OIDType(pObj._id), poster : currentUID}, {$set : pObj}, (err, doc) => {
             if(err){
                 console.error(err);
                 res.status(500).json({message : 'An error occurred updating the post', data : doc});
@@ -125,12 +131,18 @@ exports.savePost = (req, res) => {
 exports.removePost = (req, res) => {
     let postId = req.body.postId;
     let currentUID = req.session.uid;
-    Post.remove({_id : postId, poster : currentUID}, (err, doc) => {
+    Post.findOne({_id : postId, poster : currentUID}, (err, doc) => {
         if(err){
             console.error(err);
             res.status(500).json({message : 'An error occurred removing the post', data : doc});
         } else {
-            res.json({message : 'Post removed', data : doc});
+            doc.remove((err, removed) => {
+                if(err){
+                    res.status(500).json({message : 'An error occurred removing the post', data : removed});
+                } else {
+                    res.json({message : 'Post removed', data : removed});
+                }
+            });
         }
     });
 };
@@ -146,7 +158,7 @@ exports.saveComment = (req, res) => {
     let cObj = req.body;
     let currentUID = req.session.uid;
     if(cObj._id){
-        Comment.update({ _id : OIDType(cObj._id), poster : currentUID}, {$set : cObj}, (err, doc) => {
+        Comment.findOneAndUpdate({ _id : OIDType(cObj._id), poster : currentUID}, {$set : cObj}, (err, doc) => {
             if(err){
                 console.error(err);
                 res.status(500).json({message : 'An error occurred updating the comment', data : doc});
@@ -185,12 +197,18 @@ exports.saveComment = (req, res) => {
 exports.removeComment = (req, res) => {
     let commentId = OIDType(req.body.commentId);
     let currentUID = OIDType(req.session.uid);
-    Comment.remove({_id : commentId, owner : currentUID}, (err, doc) => {
+    Comment.findOne({_id : commentId, owner : currentUID}, (err, doc) => {
         if(err){
             console.error(err);
-            res.status(500).json({message : 'An error occurred removing the post', data : doc});
+            res.status(500).json({message : 'An error occurred removing the comment', data : doc});
         } else {
-            res.json({message : 'Post removed', data : doc});
+            doc.remove((err, removed) => {
+                if(err){
+                    res.status(500).json({message : 'An error occurred removing the comment', data : removed});
+                } else {
+                    res.json({message : 'Post removed', data : removed});
+                }
+            });
         }
     });
 };
