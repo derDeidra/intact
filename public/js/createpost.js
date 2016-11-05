@@ -1,6 +1,8 @@
 app.controller('createpost-page-body', function($scope, $http){
     //app.com/g/:groupName/
     $scope.groupName = window.location.pathname.split('/')[2];
+    $scope.navHeader = $scope.groupName;
+    $scope.navHeaderLink = '/g/' + $scope.groupName;
 
     function getGroupInfo(){
         var req = {
@@ -17,16 +19,15 @@ app.controller('createpost-page-body', function($scope, $http){
     }
 
     $scope.savePost = function(){
-        $scope.post.groupName = $scope.groupName;
-        var req = {
-            method: 'POST',
-            url: '/savePost',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            data: $scope.post
-        };
-        $http(req).then(function(response){
+        var fData = new FormData();
+        fData.append('title', $scope.post.title);
+        fData.append('body', $scope.post.body);
+        fData.append('pFile', $scope.pFile);
+        fData.append('groupName', $scope.groupName);
+        $http.post('/savePost', fData, {
+            headers: {'Content-Type': undefined },
+            transformRequest: angular.identity
+        }).then(function(response){
             console.log("Post successfully created");
             console.log(response);
             window.location = '/g/' + $scope.groupName;
@@ -36,4 +37,14 @@ app.controller('createpost-page-body', function($scope, $http){
     };
 
     getGroupInfo();
+});
+
+app.directive('fileInput', () => {
+    return function( scope, element, attributes ) {
+        element.on('change', function( event ) {
+            scope.$apply(function() {
+                scope[ element[0].name ] = event.target.files[0];
+            });
+        });
+    };
 });

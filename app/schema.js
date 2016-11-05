@@ -41,7 +41,8 @@ const PostSchema = new mongoose.Schema({
     group : { type : objId, required : true, ref : 'Group' },
     body : String,
     poster : { type : objId, required : true, ref : 'User'},
-    comments : [{type : objId, ref : 'Comment'}]
+    comments : [{type : objId, ref : 'Comment'}],
+    fType : String
 }, {
     timestamps : true
 });

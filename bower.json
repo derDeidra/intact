@@ -23,6 +23,7 @@
     "sweetalert": "^1.1.3",
     "angular-route": "^1.5.8",
     "bootstrap": "^3.3.7",
-    "moment": "^2.15.2"
+    "moment": "^2.15.2",
+    "angular-sanitize": "^1.5.8"
   }
 }

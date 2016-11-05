@@ -5,6 +5,8 @@ const Post = schema.Post;
 const Comment = schema.Comment;
 const User = schema.User;
 const OIDType = mongoose.Types.ObjectId;
+const path = require('path');
+const appDir = path.dirname(require.main.filename);
 
 /**
  * @function Endpoint for creating and modifying groups
@@ -107,6 +109,9 @@ exports.savePost = (req, res) => {
         });
     } else {
         pObj.poster = currentUID;
+        if(req.files){
+            pObj.fType = req.files.pFile.name.split('.')[1];
+        }
         Group.findOne({name : pObj.groupName}, function(err, doc){
             pObj.group = doc._id;
             Post.create(pObj, (err, doc) => {
@@ -114,7 +119,14 @@ exports.savePost = (req, res) => {
                     console.error(err);
                     res.status(500).json({message : 'An error occurred creating the post', data : doc});
                 } else {
-                    res.json({message : 'Post created', data : doc});
+                    if(req.files){
+                        let uploadedFile = req.files.pFile;
+                        uploadedFile.mv(appDir + '/public/files/' + doc._id + '.' + uploadedFile.name.split('.')[1], (err) => {
+                            res.json({message : 'Post created', data : doc});
+                        });
+                    } else {
+                        res.json({message : 'Post created', data : doc});
+                    }
                 }
             });
         });

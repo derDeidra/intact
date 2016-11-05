@@ -1,4 +1,5 @@
 const express = require('express');
+const fileUpload = require('express-fileupload');
 module.exports = function() {
     let app = express();
 
@@ -27,6 +28,7 @@ module.exports = function() {
 
     const morgan = require('morgan');
     app.use(morgan('dev'));
+    app.use(fileUpload());
 
     require('../app/db');
     require('../app/routes/index.server.routes')(app);

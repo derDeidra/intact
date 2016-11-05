@@ -1,6 +1,8 @@
 app.controller('group-page-body', function($scope, $http){
     //app.com/g/:groupName/
     $scope.groupName = window.location.pathname.split('/')[2];
+    $scope.navHeader = $scope.groupName;
+    $scope.navHeaderLink = '/g/' + $scope.groupName;
     $scope.posts = [];
     $scope.groups = [];
 

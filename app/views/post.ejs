@@ -30,7 +30,9 @@
         <!-- Main component for a primary marketing message or call to action -->
         <div class="jumbotron">
             <h1>{{post.title}}</h1>
-            <p>{{post.body}}<i> {{post.comments.length}} comments</i></p>
+            <p ng-bind-html="post.body | linky:'_blank'"></p>
+            <p>{{post.comments.length}} comments</p>
+            <embed ng-if="post.fType !== undefined" embed-src="{{getEmbedSrc(post._id, post.fType)}}" height="500px" width="100%" type="application/pdf"></embed>
             <hr>
             <div class="form-group">
                 <input type="text" placeholder="Enter comment" class="form-control" ng-model="comment.comment">

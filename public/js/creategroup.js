@@ -1,5 +1,8 @@
 app.controller('creategroup-page-body', function($scope, $http){
 
+    $scope.navHeader = 'IntactInsider';
+    $scope.navHeaderLink = '/';
+
     $scope.saveGroup = function(){
         var req = {
             method: 'POST',

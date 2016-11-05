@@ -18,6 +18,8 @@ app.controller('post-page-body', function($scope, $http){
             console.log("Got post");
             console.log(response);
             $scope.post = response.data.data;
+            $scope.navHeader = $scope.groupId;
+            $scope.navHeaderLink = '/g/' + $scope.groupId;
         }, function(err){
             console.log(err);
         });
@@ -70,7 +72,27 @@ app.controller('post-page-body', function($scope, $http){
         return moment(timestamp).fromNow();
     };
 
+    $scope.getEmbedSrc = function (id, ext) {
+        return '/files/' + id + '.' + ext;
+    };
+
     getUserId();
     getPostDetails($scope.postId);
 
 });
+
+app.directive('embedSrc', function () {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attrs) {
+            var current = element;
+            scope.$watch(function() { return attrs.embedSrc; }, function () {
+                var clone = element
+                    .clone()
+                    .attr('src', attrs.embedSrc);
+                current.replaceWith(clone);
+                current = clone;
+            });
+        }
+    };
+})
