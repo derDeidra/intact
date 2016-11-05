@@ -18,6 +18,12 @@ app.controller('group-page-body', function($scope, $http){
             console.log("Got user groups");
             console.log(response);
             $scope.groups = response.data.data;
+            for(var i = 0; i < $scope.groups.length; i++){
+                if($scope.groups[i].name == $scope.groupName){
+                    $scope.groupDesc = $scope.groups[i].description;
+                    break;
+                }
+            }
         }, function(err){
             console.log(err);
         });
