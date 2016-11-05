@@ -32,7 +32,8 @@
             <h1>{{post.title}}</h1>
             <p ng-bind-html="post.body | linky:'_blank'"></p>
             <p>{{post.comments.length}} comments</p>
-            <embed ng-if="post.fType !== undefined" embed-src="{{getEmbedSrc(post._id, post.fType)}}" height="500px" width="100%" type="application/pdf"></embed>
+            <embed ng-if="post.fType === 'pdf'" embed-src="{{getEmbedSrc(post._id, post.fType)}}" height="500px" width="100%" type="application/pdf"></embed>
+            <a ng-if="post.fType !== undefined && post.fType !== 'pdf'" ng-href="/files/{{post._id}}.{{post.fType}}">Download Attached {{post.fType}}</a>
             <hr>
             <div class="form-group">
                 <input type="text" placeholder="Enter comment" class="form-control" ng-model="comment.comment">
