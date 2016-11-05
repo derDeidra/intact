@@ -24,3 +24,13 @@ img {
     float: left;
     margin-right: 1em;
 }
+
+.panel > .panel-heading {
+    background-image: none;
+    background-color: #383737;
+    color: white;
+}
+
+textarea {
+    resize: none;
+}

@@ -23,7 +23,7 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-sm-7">
+        <div class="col-md-7">
             <div class="jumbotron">
                 <h1>Create Post</h1>
                 <form action="/savePost" method="POST">
@@ -43,17 +43,23 @@
                         <button type="button" class="btn btn-primary active" ng-click="savePost()">Share Post</button>
                     </div>
                 </form>
-            </div> <!--/jumbotron -->
+            </div>
         </div>
 
-
-        <div class="col-sm-4 col-sm-offset-1 sidebar">
-            <div class="btn-group-vertical sidebar-module">
-                <h2>Welcome to g/<%=groupName%></h2>
-                <p>Rules</p>
-                <ul ng-if="group.rules && group.rules.length > 0">
-                    <li ng-repeat="rule in group.rules">{{rule}}</li>
-                </ul>
+        <div class="col-sm-4 col-sm-offset-1">
+            <div class="panel panel-default">
+                <div class="panel-heading"><h2 class="panel-title">You are posting to g/<%=groupName%></h2></div>
+                <div class="panel-body">
+                    <div ng-if="group.rules && group.rules.length > 0">
+                        <p>Guidelines</p>
+                        <ul>
+                            <li ng-repeat="rule in group.rules">{{rule}}</li>
+                        </ul>
+                    </div>
+                    <div ng-if="!group.rules || group.rules.length == 0">
+                        <p>There are no guidelines for this group!</p>
+                    </div>
+                </div>
             </div>
         </div>
 

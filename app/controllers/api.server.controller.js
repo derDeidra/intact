@@ -297,7 +297,7 @@ exports.getAllGroups = (req, res) => {
  */
 exports.getPostsForGroup = (req, res) => {
     let groupName = req.query.groupName;
-    Group.findOne({name : groupName}).populate('posts').exec(function(err, doc){
+    Group.findOne({name : groupName}).populate('posts', '_id title comments createdAt', null, { sort: { 'createdAt': -1 } }).exec(function(err, doc){
         if(err){
             console.error(err);
             res.status(500).json({message : 'An error occurred finding the posts', data : doc});
