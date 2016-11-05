@@ -25,6 +25,26 @@ app.controller('post-page-body', function($scope, $http){
         });
     }
 
+    $scope.deletePost = function(postId){
+        var req = {
+            method: 'POST',
+            url: '/removePost',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: {
+                postId : postId
+            }
+        };
+        $http(req).then(function(response){
+            console.log("Post deleted");
+            console.log(response);
+            window.location = '/g/' + $scope.groupId;
+        }, function(err){
+            console.log(err);
+        });
+    };
+
     function getUserId() {
         $http.get('/getUserId').then(function(res) {
             $scope.userId = res.data;

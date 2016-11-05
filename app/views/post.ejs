@@ -40,6 +40,7 @@
             </div>
             <p>
                 <button class="btn btn-lg btn-primary" ng-click="createComment(null)" role="button">Comment</button>
+                <button class="btn btn-lg btn-danger" ng-if="post.poster === userId" ng-click="deletePost(post._id)">Delete Post</button>
             </p>
         </div>
         <div class="table">
