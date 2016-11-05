@@ -1,0 +1,52 @@
+<html lang="en" ng-app="intact">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Intact Insider</title>
+
+    <% include templates/angular_priority_depends.ejs %>
+    <script type="text/javascript" src="/js/discover.js"></script>
+
+    <% include templates/common_depends.ejs %>
+
+    <!-- Custom styles for this template -->
+    <link href="/css/group.css" rel="stylesheet">
+
+<body ng-controller="discover-page-body">
+
+<% include templates/navbar.ejs %>
+
+<div class="container">
+    <div>
+        <div class="col-md-8" ng-if="groups.length > 0">
+            <div class="panel panel-default" ng-repeat="group in groups" ng-if="!isMember(group)">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{{group.name}}</h3>
+                </div>
+                <div class="panel-body">
+                    <p>{{group.description}}</p>
+                    <p>{{group.members.length}} members</p>
+                    <button class="btn btn-default" ng-click="joinGroup(group)">Join Group</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8" ng-if="posts.length == 0">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">No groups!</h3>
+                </div>
+                <div class="panel-body">
+                    There are no groups!  Why not <a href="/createGroup">create</a> one?
+                </div>
+            </div>
+        </div>
+    </div><!-- /.row -->
+</div><!-- /.container -->
+</body>
+</html>

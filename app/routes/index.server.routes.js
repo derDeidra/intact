@@ -8,9 +8,12 @@ module.exports = function(app) {
     const createpost = require('../controllers/createpost.server.controller');
     const auth = require('../controllers/auth.server.controller');
     const api = require('../controllers/api.server.controller');
+    const discover = require('../controllers/discover.server.controller');
+
 
     //Pages
     app.get('/', auth.indexRedirect, landing.render);
+    app.get('/discover', auth.isLoggedIn, discover.render);
     app.get('/register', register.render);
     app.get('/g/:groupName/post', auth.isLoggedIn, createpost.render);
     app.get('/createGroup', auth.isLoggedIn, creategroup.render);
@@ -23,6 +26,8 @@ module.exports = function(app) {
     app.get('/logout', auth.isLoggedIn, auth.logout);
 
     //API
+    app.post('/joinGroup', auth.isLoggedIn, api.joinGroup);
+
     app.post('/saveGroup', auth.isLoggedIn, api.saveGroup);
     app.post('/savePost', auth.isLoggedIn, api.savePost);
     app.post('/saveComment', auth.isLoggedIn, api.saveComment);
