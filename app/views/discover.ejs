@@ -36,13 +36,23 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-8" ng-if="posts.length == 0">
+        <div class="col-md-8" ng-if="groups.length == 0">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">No groups!</h3>
                 </div>
                 <div class="panel-body">
                     There are no groups!  Why not <a href="/createGroup">create</a> one?
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8" ng-if="isMemberOfAllGroups()">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">You've joined all the groups!</h3>
+                </div>
+                <div class="panel-body">
+                    You have joined all available groups!
                 </div>
             </div>
         </div>

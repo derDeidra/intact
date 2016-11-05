@@ -47,6 +47,7 @@ app.controller('discover-page-body', function($scope, $http){
             console.log("Joined group");
             console.log(response);
             group.members.push($scope.userId);
+            swal("Success!", "Successfully joined " + group.name, "success")
         }, function(err){
             console.log(err);
         });
@@ -54,6 +55,14 @@ app.controller('discover-page-body', function($scope, $http){
 
     $scope.isMember = function(group){
         return group.members.indexOf($scope.userId) != -1
+    };
+
+    $scope.isMemberOfAllGroups = function(){
+        for(var i = 0; i < $scope.groups.length; i++){
+            if(!isMember($scope.groups[i]))
+                return false;
+        }
+        return true;
     };
 
     getUserId();
