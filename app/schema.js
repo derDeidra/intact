@@ -18,7 +18,8 @@ const GroupSchema = new mongoose.Schema({
     description : String,
     posts : [{type : objId, ref: 'Post'}],
     members : [{ type : objId, ref : 'User'}],
-    rules : [{type : String}]
+    rules : [{type : String}],
+    private : Boolean
 });
 
 GroupSchema.post("save", function(doc, next) {

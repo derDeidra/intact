@@ -31,7 +31,11 @@ exports.saveGroup = (req, res) => {
     } else {
         gObj.owner = currentUID;
         gObj.posts = [];
-        gObj.members = Array(currentUID);
+        if(!gObj.members){
+            gObj.members = new Array(currentUID);
+        } else {
+            gObj.members.push(currentUID);
+        }
         Group.create(gObj, (err, doc) => {
             if(err){
                 console.error(err);
@@ -278,7 +282,7 @@ exports.getUserGroups = (req, res) => {
  *   The express HTTP response to be sent back to the requester
  */
 exports.getAllGroups = (req, res) => {
-    Group.find({}, (err, doc) => {
+    Group.find({ private : false }, (err, doc) => {
         if(err){
             console.error(err);
             res.status(500).json({message : 'An error occurred finding the groups', data : doc});
@@ -305,7 +309,7 @@ exports.getPostsForGroup = (req, res) => {
             if(!doc){
                 res.status(500).json({message : 'No group found with that name', data : doc});
             } else {
-                res.json({message : `Found ${doc.posts.length} posts`, data : doc.posts});
+                res.json({message : `Found ${doc.posts.length} posts`, data : doc});
             }
         }
     });
@@ -345,6 +349,23 @@ exports.getPostDetails = (req, res) => {
  */
 exports.getUserId = (req, res) => {
     res.send(req.session.uid);
+};
+
+/**
+ * @function Endpoint for getting a list of users
+ * @param {object} req
+ *   The express HTTP request containing the information required for the function
+ * @param {object} res
+ *   The express HTTP response to be sent back to the requester
+ */
+exports.getUsers = (req, res) => {
+    User.find({}, "_id email name",(err, doc) => {
+        if(err){
+            res.status(500).json({message : 'An error occurred finding the users', data : doc});
+        } else {
+            res.json({message : `Got users`, data : doc});
+        }
+    });
 };
 
 

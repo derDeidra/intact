@@ -16,6 +16,7 @@ module.exports = function(app) {
     app.get('/discover', auth.isLoggedIn, discover.render);
     app.get('/register', register.render);
     app.get('/g/:groupName/post', auth.isLoggedIn, createpost.render);
+    app.get('/g/:groupName/edit', auth.isLoggedIn, creategroup.render);
     app.get('/createGroup', auth.isLoggedIn, creategroup.render);
     app.get('/g/:groupName', auth.isLoggedIn, group.render);
     app.get('/g/:groupName/p/:postId', auth.isLoggedIn, post.render);
@@ -37,6 +38,7 @@ module.exports = function(app) {
     app.post('/removeComment', auth.isLoggedIn, api.removeComment);
 
     app.get('/getUserId', auth.isLoggedIn, api.getUserId);
+    app.get('/getUsers', auth.isLoggedIn, api.getUsers);
     app.get('/getUserGroups', auth.isLoggedIn, api.getUserGroups);
     app.get('/getAllGroups', auth.isLoggedIn, api.getAllGroups);
     app.get('/getPostsForGroup', auth.isLoggedIn, api.getPostsForGroup);

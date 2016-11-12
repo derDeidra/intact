@@ -5,6 +5,8 @@ app.controller('group-page-body', function($scope, $http){
     $scope.navHeaderLink = '/g/' + $scope.groupName;
     $scope.posts = [];
     $scope.groups = [];
+    $scope.userId = null;
+
 
     function getUserGroups(){
         var req = {
@@ -40,9 +42,18 @@ app.controller('group-page-body', function($scope, $http){
         $http(req).then(function(response){
             console.log("Got group posts");
             console.log(response);
-            $scope.posts = response.data.data;
+            $scope.posts = response.data.data.posts;
+            $scope.owner = response.data.data.owner;
         }, function(err){
             console.log(err);
+        });
+    }
+
+    function getUserId() {
+        $http.get('/getUserId').then(function(res) {
+            $scope.userId = res.data;
+        }, function(res){
+            console.log(res);
         });
     }
 
@@ -50,6 +61,7 @@ app.controller('group-page-body', function($scope, $http){
         return moment(timestamp).fromNow();
     };
 
+    getUserId();
     getUserGroups();
     getPostsForGroup($scope.groupName);
 });

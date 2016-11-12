@@ -96,6 +96,10 @@ app.controller('post-page-body', function($scope, $http){
         return '/files/' + id + '.' + ext;
     };
 
+    $scope.isImgExtension = function(ext){
+        return ext === 'jpg' || ext === 'png' || ext === 'gif';
+    };
+
     getUserId();
     getPostDetails($scope.postId);
 

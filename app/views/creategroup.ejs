@@ -38,12 +38,28 @@
                         <textarea class="form-control" rows="8" id="description" name="body" placeholder="Group Description" ng-model="group.description"></textarea>
                     </div>
                     <div class="form-group">
-                        <label class="sr-only" for="rule">Group Name:</label>
+                        <label class="sr-only" for="rule">Group Guideline</label>
                         <input type="title" class="form-control titleFm" name="rule" id="rule" placeholder="Enter group guideline" ng-model="group.temprule">
                         <div class="btn btn-default" ng-click="addRule()">Add Guideline</div>
                         <ul>
-                            <li ng-repeat="rule in group.rules">{{rule}}</li>
+                            <li ng-repeat="rule in group.rules">{{rule}}<span class="glyphicon glyphicon-remove" aria-hidden="true" ng-click="removeRule(rule)"></span></li>
                         </ul>
+                    </div>
+                    <div class="form-group">
+                        <ui-select ng-model="group.tempmember" theme="bootstrap" style="width: 300px;" title="Add Group Member" on-select="addUser($item)">
+                            <ui-select-match placeholder="Select a group member to add">{{$select.selected.name}}</ui-select-match>
+                            <ui-select-choices repeat="user in users | filter: $select.search">
+                                <span ng-bind-html="user.name | highlight: $select.search"></span>
+                                <span ng-bind-html="user.email | highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                        <ul>
+                            <li ng-repeat="uid in group.members">{{resolveNameFromId(uid)}}<span class="glyphicon glyphicon-remove" aria-hidden="true" ng-click="removeUser(uid)"></span></li>
+                        </ul>
+                    </div>
+                    <div class="form-group">
+                        <label class="sr-only" for="private">Private</label>
+                        <input id="private" name="private" ng-model="group.private" type="checkbox"> Private
                     </div>
                     <div class="form-group">
                         <button type="button" class="btn btn-primary active" ng-click="saveGroup()">Create Group</button>

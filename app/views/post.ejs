@@ -31,17 +31,23 @@
         <div class="jumbotron">
             <h1>{{post.title}}</h1>
             <p ng-bind-html="post.body | linky:'_blank'"></p>
-            <p>{{post.comments.length}} comments</p>
+            <img ng-if="isImgExtension(post.fType)" ng-src="/files/{{post._id}}.{{post.fType}}" style="max-width: 100%; margin-bottom: 10px;">
             <embed ng-if="post.fType === 'pdf'" embed-src="{{getEmbedSrc(post._id, post.fType)}}" height="500px" width="100%" type="application/pdf"></embed>
-            <a ng-if="post.fType !== undefined && post.fType !== 'pdf'" ng-href="/files/{{post._id}}.{{post.fType}}">Download Attached {{post.fType}}</a>
+            <a ng-if="post.fType !== undefined && post.fType !== 'pdf' && !isImgExtension(post.fType)" ng-href="/files/{{post._id}}.{{post.fType}}">Download Attached {{post.fType}}</a>
             <hr>
-            <div class="form-group">
-                <input type="text" placeholder="Enter comment" class="form-control" ng-model="comment.comment">
-            </div>
             <p>
-                <button class="btn btn-lg btn-primary" ng-click="createComment(null)" role="button">Comment</button>
+                <a class="btn btn-lg btn-primary" ng-if="post.poster === userId" href="edit">Edit Post</a>
                 <button class="btn btn-lg btn-danger" ng-if="post.poster === userId" ng-click="deletePost(post._id)">Delete Post</button>
             </p>
+        </div>
+        <div class="jumbotron">
+            <p>{{post.comments.length}} comments</p>
+            <div class="form-group">
+                <input type="text" placeholder="Enter comment" class="form-control" ng-model="comment.comment" ng-keydown="$event.which === 13 && createComment(null)">
+            </div>
+            <div>
+                <button class="btn btn-lg btn-primary" ng-click="createComment(null)" role="button">Comment</button>
+            </div>
         </div>
         <div class="table">
             <div class="tablerow comment-box" ng-repeat="comment in post.comments">
@@ -55,7 +61,6 @@
                 <div class="tablecell">
                     <p>
                         <a href="#" ng-click="deleteComment(comment)" ng-if="comment.owner._id === userId">Delete</a>
-                        <a href="#" ng-click="createComment(comment)">Respond</a>
                     </p>
                 </div>
             </div>

@@ -24,6 +24,8 @@
     "angular-route": "^1.5.8",
     "bootstrap": "^3.3.7",
     "moment": "^2.15.2",
-    "angular-sanitize": "^1.5.8"
+    "angular-sanitize": "^1.5.8",
+    "acute-select": "^0.1.0",
+    "angular-ui-select": "^0.19.6"
   }
 }

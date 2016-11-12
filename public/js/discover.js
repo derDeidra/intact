@@ -59,7 +59,7 @@ app.controller('discover-page-body', function($scope, $http){
 
     $scope.isMemberOfAllGroups = function(){
         for(var i = 0; i < $scope.groups.length; i++){
-            if(!isMember($scope.groups[i]))
+            if(!$scope.isMember($scope.groups[i]))
                 return false;
         }
         return true;
