@@ -1,8 +1,12 @@
 app.controller('createpost-page-body', function($scope, $http){
     //app.com/g/:groupName/
-    $scope.groupName = window.location.pathname.split('/')[2];
+    var path = window.location.pathname.split('/');
+    $scope.groupName = path[2];
     $scope.navHeader = $scope.groupName;
     $scope.navHeaderLink = '/g/' + $scope.groupName;
+    if(path.length == 6){
+        getPostDetails(path[4]);
+    }
 
     function getGroupInfo(){
         var req = {
@@ -18,8 +22,27 @@ app.controller('createpost-page-body', function($scope, $http){
         });
     }
 
+    function getPostDetails(postId){
+        var req = {
+            method: 'GET',
+            url: '/getPostDetails?postId=' + postId,
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        };
+        $http(req).then(function(response){
+            console.log("Got post");
+            console.log(response);
+            $scope.post = response.data.data;
+        }, function(err){
+            console.log(err);
+        });
+    }
+
     $scope.savePost = function(){
         var fData = new FormData();
+        if($scope.post._id)
+            fData.append('_id', $scope.post._id);
         fData.append('title', $scope.post.title);
         fData.append('body', $scope.post.body);
         fData.append('pFile', $scope.pFile);

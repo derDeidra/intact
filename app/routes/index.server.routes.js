@@ -20,6 +20,7 @@ module.exports = function(app) {
     app.get('/createGroup', auth.isLoggedIn, creategroup.render);
     app.get('/g/:groupName', auth.isLoggedIn, group.render);
     app.get('/g/:groupName/p/:postId', auth.isLoggedIn, post.render);
+    app.get('/g/:groupName/p/:postId/edit', auth.isLoggedIn, createpost.render);
 
     //Auth
     app.post('/register', auth.register);
