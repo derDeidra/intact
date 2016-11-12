@@ -68,6 +68,7 @@ app.controller('post-page-body', function($scope, $http){
             console.log("Saved comment");
             console.log(response);
             $scope.post.comments.push(response.data.data);
+            $scope.comment = '';
         }, function(err){
             console.log(err);
         });
