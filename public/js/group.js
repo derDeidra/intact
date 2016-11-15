@@ -44,6 +44,7 @@ app.controller('group-page-body', function($scope, $http){
             console.log(response);
             $scope.posts = response.data.data.posts;
             $scope.owner = response.data.data.owner;
+            $scope.groupId = response.data.data._id;
         }, function(err){
             console.log(err);
         });
@@ -59,6 +60,26 @@ app.controller('group-page-body', function($scope, $http){
 
     $scope.formatInterval = function(timestamp){
         return moment(timestamp).fromNow();
+    };
+
+    $scope.leaveGroup = function(){
+        var req = {
+            method: 'POST',
+            url: '/leaveGroup',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data : {
+                groupId : $scope.groupId
+            }
+        };
+        $http(req).then(function(response){
+            console.log("Left the group");
+            console.log(response);
+            window.location = '/';
+        }, function(err){
+            console.log(err);
+        });
     };
 
     getUserId();

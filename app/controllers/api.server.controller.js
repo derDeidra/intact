@@ -256,6 +256,32 @@ exports.joinGroup = (req, res) => {
 };
 
 /**
+ * @function Endpoint for leaving a group
+ * @param {object} req
+ *   The express HTTP request containing the information required for the function
+ * @param {object} res
+ *   The express HTTP response to be sent back to the requester
+ */
+exports.leaveGroup = (req, res) => {
+    let currentUID = OIDType(req.session.uid);
+    let groupId = req.body.groupId;
+    Group.findByIdAndUpdate(groupId, {$pull : {"members" : currentUID}}, (err, doc) => {
+        if(err){
+            console.error(err);
+            res.status(500).json({message : 'An error occurred leaving the group', data : doc});
+        } else {
+            User.findByIdAndUpdate(currentUID, {$pull : {"groups" : groupId}}, (err, doc) => {
+                if(err){
+                    res.status(500).json({message : 'An error occurred leaving the group', data : doc});
+                } else {
+                    res.json({message : `Left group`, data : doc});
+                }
+            });
+        }
+    });
+};
+
+/**
  * @function Endpoint for getting groups the user is a member of
  * @param {object} req
  *   The express HTTP request containing the information required for the function

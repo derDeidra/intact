@@ -29,6 +29,8 @@ module.exports = function(app) {
 
     //API
     app.post('/joinGroup', auth.isLoggedIn, api.joinGroup);
+    app.post('/leaveGroup', auth.isLoggedIn, api.leaveGroup);
+
 
     app.post('/saveGroup', auth.isLoggedIn, api.saveGroup);
     app.post('/savePost', auth.isLoggedIn, api.savePost);
