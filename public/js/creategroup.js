@@ -50,6 +50,8 @@ app.controller('creategroup-page-body', function($scope, $http){
     }
 
     $scope.saveGroup = function(){
+        if($scope.group.private === undefined)
+            $scope.group.private = false;
         var req = {
             method: 'POST',
             url: '/saveGroup',

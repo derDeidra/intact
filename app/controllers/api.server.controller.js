@@ -308,7 +308,7 @@ exports.getUserGroups = (req, res) => {
  *   The express HTTP response to be sent back to the requester
  */
 exports.getAllGroups = (req, res) => {
-    Group.find({ private : false }, (err, doc) => {
+    Group.find({private : false}, (err, doc) => {
         if(err){
             console.error(err);
             res.status(500).json({message : 'An error occurred finding the groups', data : doc});

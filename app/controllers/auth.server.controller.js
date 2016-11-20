@@ -13,7 +13,7 @@ Group.find({name : "all"}, (err, doc) => {
         if(doc.length > 0){
             globalGroup = doc[0]._id;
         } else {
-            Group.create({name : "all", description : "global group", posts : [], members : []}, (err, ndoc) => {
+            Group.create({name : "all", description : "global group", posts : [], members : [], private : false}, (err, ndoc) => {
                 if(err){
                     console.log("Error creating master group");
                 } else {
