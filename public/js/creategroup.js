@@ -89,9 +89,11 @@ app.controller('creategroup-page-body', function($scope, $http){
     };
 
     $scope.resolveNameFromId = function(id){
-        for(var i = 0; i < $scope.users.length; i++){
-            if($scope.users[i]._id === id){
-                return $scope.users[i].name;
+        if($scope.users){
+            for(var i = 0; i < $scope.users.length; i++){
+                if($scope.users[i]._id === id){
+                    return $scope.users[i].name;
+                }
             }
         }
         return "undefined"
