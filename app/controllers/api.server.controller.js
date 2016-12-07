@@ -327,7 +327,7 @@ exports.getAllGroups = (req, res) => {
  */
 exports.getPostsForGroup = (req, res) => {
     let groupName = req.query.groupName;
-    Group.findOne({name : groupName}).populate('posts', '_id title comments createdAt', null, { sort: { 'createdAt': -1 } }).exec(function(err, doc){
+    Group.findOne({name : groupName}).populate('posts', '_id title comments createdAt poster', null, { sort: { 'createdAt': -1 } }).exec(function(err, doc){
         if(err){
             console.error(err);
             res.status(500).json({message : 'An error occurred finding the posts', data : doc});
@@ -335,7 +335,13 @@ exports.getPostsForGroup = (req, res) => {
             if(!doc){
                 res.status(500).json({message : 'No group found with that name', data : doc});
             } else {
-                res.json({message : `Found ${doc.posts.length} posts`, data : doc});
+                Group.populate(doc, {path : 'posts.poster', model : 'User', select : '_id name'}, (err, doc2) => {
+                    if(err){
+                        res.status(500).json({message : 'An error occurred finding the posts', data : doc2});
+                    } else {
+                        res.json({message : `Found ${doc.posts.length} posts`, data : doc2});
+                    }
+                });
             }
         }
     });
@@ -350,11 +356,11 @@ exports.getPostsForGroup = (req, res) => {
  */
 exports.getPostDetails = (req, res) => {
     let postId = OIDType(req.query.postId);
-    Post.findById(postId).populate('comments').exec((err, doc) => {
+    Post.findById(postId).populate('comments').populate('poster', '_id name').exec((err, doc) => {
         if(err){
             res.status(500).json({message : 'An error occurred finding the post', data : doc});
         } else {
-            Post.populate(doc, {path : 'comments.owner', model : 'User'}, (err, doc2) => {
+            Post.populate(doc, {path : 'comments.owner', model : 'User', select : '_id name'}, (err, doc2) => {
                 if(err){
                     res.status(500).json({message : 'An error occurred finding the post', data : doc2});
                 } else {

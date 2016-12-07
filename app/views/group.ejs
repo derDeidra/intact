@@ -30,7 +30,7 @@
                         <h3 class="panel-title"><a href="/g/{{groupName}}/p/{{post._id}}">{{post.title}}</a></h3>
                     </div>
                     <div class="panel-body">
-                        {{formatInterval(post.createdAt)}}, {{post.comments.length}} comments
+                        Posted by {{post.poster.name}} {{formatInterval(post.createdAt)}}, {{post.comments.length}} comments
                     </div>
                 </div>
             </div>

@@ -20,7 +20,7 @@ form {
     border: solid 4px cyan;
 }
 
-img {
+nav > img {
     float: left;
     margin-right: 1em;
 }

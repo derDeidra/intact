@@ -31,6 +31,7 @@
         <div class="jumbotron">
             <h1>{{post.title}}</h1>
             <p ng-bind-html="post.body | linky:'_blank'"></p>
+            <p>Posted by {{post.poster.name}} {{formatInterval(post.createdAt)}}</p>
             <img ng-if="isImgExtension(post.fType)" ng-src="/files/{{post._id}}.{{post.fType}}" style="max-width: 100%; margin-bottom: 10px;">
             <embed ng-if="post.fType === 'pdf'" embed-src="{{getEmbedSrc(post._id, post.fType)}}" height="500px" width="100%" type="application/pdf"></embed>
             <a ng-if="post.fType !== undefined && post.fType !== 'pdf' && !isImgExtension(post.fType)" ng-href="/files/{{post._id}}.{{post.fType}}">Download Attached {{post.fType}}</a>
