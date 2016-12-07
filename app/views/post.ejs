@@ -37,8 +37,8 @@
             <a ng-if="post.fType !== undefined && post.fType !== 'pdf' && !isImgExtension(post.fType)" ng-href="/files/{{post._id}}.{{post.fType}}">Download Attached {{post.fType}}</a>
             <hr>
             <p>
-                <a class="btn btn-lg btn-primary" ng-if="post.poster === userId" ng-href="{{post._id}}/edit">Edit Post</a>
-                <button class="btn btn-lg btn-danger" ng-if="post.poster === userId" ng-click="deletePost(post._id)">Delete Post</button>
+                <a class="btn btn-lg btn-primary" ng-if="post.poster._id === userId" ng-href="{{post._id}}/edit">Edit Post</a>
+                <button class="btn btn-lg btn-danger" ng-if="post.poster._id === userId" ng-click="deletePost(post._id)">Delete Post</button>
             </p>
         </div>
         <div class="jumbotron">
