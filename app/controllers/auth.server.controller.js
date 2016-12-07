@@ -81,7 +81,7 @@ exports.register = (req, res) => {
                                 req.session.loggedin = false;
                                 res.redirect('/');
                             } else {
-                                console.log(`Added user ${email} with password ${password} hashed as ${hash}`);
+                                //console.log(`Added user ${email} with password ${password} hashed as ${hash}`);
                                 req.session.loggedin = true;
                                 req.session.name = name;
                                 req.session.uid = doc._id;
